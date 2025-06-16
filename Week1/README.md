@@ -1,6 +1,6 @@
 Tìm Hiểu Về AWS
 
-# 1.Overview
+# 1. Overview
 
 - AWS là gì?: Amazon Web Service là giải pháp điện toán đám mây đi kèm với hơn 200 dịch vụ cho doanh nghiệp sử dụng để giảm chi phí duy trì và mở rộng hoạt động.
 - Các mô hình cloud computing:
@@ -22,8 +22,8 @@ Tìm Hiểu Về AWS
 - Acc AWS:
 ![AWS Account](images/Proof.png)
 
-#2. Computing Service
-    - EC2: là cơ sở hạ tầng điện toán đám mây giúp cung cấp tài nguyên máy tính ảo hóa theo yêu cầu sử dụng, các máy tính ảo hóa có thể mở rộng về khả năng xử lý cùng với các thành phần cứng ảo như ram, cpu, và dung lượng, các máy ảo EC2 có thể kết hợp với nhau để đảm bảo tính sẵn sàng và triển khai ứng dụng nhanh nhất có thể.
+# 2. Computing Service
+- EC2: là cơ sở hạ tầng điện toán đám mây giúp cung cấp tài nguyên máy tính ảo hóa theo yêu cầu sử dụng, các máy tính ảo hóa có thể mở rộng về khả năng xử lý cùng với các thành phần cứng ảo như ram, cpu, và dung lượng, các máy ảo EC2 có thể kết hợp với nhau để đảm bảo tính sẵn sàng và triển khai ứng dụng nhanh nhất có thể.
     - Load Balancing: Phân phối lượng công việc trên các máy chủ
         - HTTP: hoạt động ở layer 7 của OSI model,
         - TCP: hoạt động trên layer 4
@@ -35,7 +35,7 @@ Tìm Hiểu Về AWS
             - URL Hash: tương tự như IP nhưng sử dụng URL
             - Weighted Round Robin: biến thể của Round robin, mỗi máy chủ dc gán một trọng số khác nhau dựa trên năng lực xử lý
             - Least Loaded: Gửi yêu cầu đến máy chủ có trọng tải thấp nhất tại thời điểm hiện tại, dựa trên các chỉ số như clockrate, used memory,…
-    - EC2 Autoscaling: Tự động tăng giảm các instances EC2 nhẳm đảm bảo có đủ tài nguyên để đáp ứng với yêu cầu kết nối và khả năng hoạt động trong trường hợp có instance bị lỗi. Đồng thời giám sát độ ổn định của các máy ảo và tự động khởi động lại trong trường hợp phát hiện lỗi, cho phép cập nhật phần mềm cho các trường hợp đang chạy đồng đều.Cần phải có Autoscaling để đảm sự ổn định và hoạt động của ứng dụng cùng với sự đồng đều giữa các trường hợp, auto scaling giúp tăng tự động hóa của ứng dụng và khả năng vận hành 24/7 mà không cần sự can thiệp.
+- EC2 Autoscaling: Tự động tăng giảm các instances EC2 nhẳm đảm bảo có đủ tài nguyên để đáp ứng với yêu cầu kết nối và khả năng hoạt động trong trường hợp có instance bị lỗi. Đồng thời giám sát độ ổn định của các máy ảo và tự động khởi động lại trong trường hợp phát hiện lỗi, cho phép cập nhật phần mềm cho các trường hợp đang chạy đồng đều.Cần phải có Autoscaling để đảm sự ổn định và hoạt động của ứng dụng cùng với sự đồng đều giữa các trường hợp, auto scaling giúp tăng tự động hóa của ứng dụng và khả năng vận hành 24/7 mà không cần sự can thiệp.
         - Có 2 kiểu Autoscaling:
             - Horizontal: tạo thêm các phiên bản dựa trên yêu cầu sử dụng và phân bổ công việc đồng đều cho các phiên bản tạo thêm
             - Vertical: Tăng khả năng xử lý của 1 phiên bản để có thể đáp ứng yêu cầu
