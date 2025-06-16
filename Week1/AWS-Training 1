@@ -20,11 +20,8 @@ Tìm Hiểu Về AWS
     Giữ chỗ, trả cho một dịch vụ mình sẽ dùng và sẽ phải trả kể cả không dùng nhưng lúc dùng thì sẽ được giảm giá 
     
 - Acc AWS:
-<picture>
-<source media="(prefers-color-scheme: dark)" srcset="https://www.notion.so/image/attachment%3Abad05fea-f1c5-4a60-a95b-d4893afc4b45%3Aimage.png?table=block&id=20ec470c-f608-80d7-b11d-fc79ee6a01bc&spaceId=a919ad19-93f6-452a-99d5-c59dbbec2411&width=2000&userId=1a8d872b-594c-81ce-b639-0002b032cfbc&cache=v2">
-![image.png](attachment:bad05fea-f1c5-4a60-a95b-d4893afc4b45:image.png)
-<picture>
-1. Computing Service
+![AWS Account](Images/Proof.png)
+2. Computing Service
     - EC2: là cơ sở hạ tầng điện toán đám mây giúp cung cấp tài nguyên máy tính ảo hóa theo yêu cầu sử dụng, các máy tính ảo hóa có thể mở rộng về khả năng xử lý cùng với các thành phần cứng ảo như ram, cpu, và dung lượng, các máy ảo EC2 có thể kết hợp với nhau để đảm bảo tính sẵn sàng và triển khai ứng dụng nhanh nhất có thể.
     - Load Balancing: Phân phối lượng công việc trên các máy chủ
         - HTTP: hoạt động ở layer 7 của OSI model,
@@ -41,14 +38,14 @@ Tìm Hiểu Về AWS
         - Có 2 kiểu Autoscaling:
             - Horizontal: tạo thêm các phiên bản dựa trên yêu cầu sử dụng và phân bổ công việc đồng đều cho các phiên bản tạo thêm
             - Vertical: Tăng khả năng xử lý của 1 phiên bản để có thể đáp ứng yêu cầu
-2. Event Service
+3. Event Service
 - Message Queue: Là phần mềm trung gian cho phép gửi tin nhắn cho các ứng dụng dưới hình thức publisher và subscriber, nhận tin nhắn dưới dạng cơ bản (text,xml,json) và gửi đi, Message Queue tuân thủ theo FIFO - First In First Out, tin đầu tiên vào sẽ luôn là tin đầu tiên được gửi đi.
 - Message Broker: Một phiên bản nâng cao hơn của Message Queue, cho khả năng phiên dịch tin nhắn để các ứng dụng chạy bằng code khác nhau hoặc các nền tảng khác nhau đều nhận được tin. Message Broker cũng có thêm các tính năng nhằm giúp tối ưu khả năng đưa tin đảm bảo rồi người nhận sẽ nhận được tin.Là phần mềm trung gian, message broker cho phép người gửi gửi mà không cần biết người nhận là ai, có đang hoạt động không hay có bao nhiêu người nhận.
 - SNS: Dịch vụ thông báo nhanh, cho phép gửi tin nhắn riêng lẻ hoặc hàng loạt tới số lượng lớn người nhận, gửi tin nhắn đến email, thiết bị di động, đến cả các dịch phụ phân tán tin nhắn khác. hoạt động theo hình thức theo dõi công khai (Publisher - Subscriber)
 - SQS: Hệ thống sắp xếp phân tán, tin không được gửi trực tiếp đến người nhận mà người nhận phải đi thăm dò SQS để tìm tin nhắn đấy, ai cũng có thể nhận, xử lý và xóa tin nhắn. Chỉ có thể sử dụng được nếu tất cả người dùng y hệt nhau.
 - Ngoài SNS và SQS, người dùng có thể chọn các dịch vụ khác như Apache Kafka hoặc RabbitMQ
 - EventBridge: Dịch vụ không máy chủ cho phép giao tiếp không đồng bộ giữa các dịch vụ của AWS và phần mềm của bên thứ 3. Giao tiếp dựa trên các sự kiện, khi mà dịch vụ nguồn tạo ra sự kiện, EventBridge sẽ đảm sẽ đảm nhiệm sự kiện đấy và đảm bảo đối tượng mà sự kiện cần được thông báo đến sẽ nhận được tin.
-1. Network service
+4. Network service
 - VPC: Cho phép người dùng tạo Private Cloud trong cơ sở hạ tầng của Public Cloud. Đảm bảo sự bảo mật của dữ liệu khách hàng, ngăn chặn truy cập trái phép bằng nhiều biện pháp bảo mật như subnet, VLAN và VPN, những biện pháp này chỉ được phân bổ cho riêng từng khách hàng, đảm bảo rằng không có bên nào từ public có thể truy cập được dữ liệu trên VPC.
 - Subnet (mạng con): giúp tối ưu hệ thống mạng, giúp các packet đi thẳng đến người nhận thay vì phải đi qua nhưng router không cần thiết.
 - NAT Gateway: cho phép tài nguyên trong private subnet kết nối với các dịch vụ bên ngoài và internet nhưng đồng thời không cho phép tất cả các dịch vụ không nằm trong private subnet giao tiếp với chúng. Nếu để Public thì private subnet có thể có kết nối với internet nhưng ko thể nhận kết nào, còn Private thì chỉ cho giao tiếp giữa các VPC nhưng chỉ là đầu đi chứ không được đầu về
@@ -61,3 +58,34 @@ Tìm Hiểu Về AWS
     - Latency Routing Policy: Nếu trang Web được host ở nhiều vùng, thì hệ thống sẽ tự động chọn vùng có độ trễ thấp nhất từ vị trí người dùng.
     - Multivalue Routing Policy: Route 53 sẽ trả nhiều value sau yêu cầu DNS queries.
     - Weighted Routing Policy: điều hướng truy cập đến nhiều tài nguyên với một tên miền duy nhất dựa theo thiết lập của người dùng
+5. Assignment
+
+a. Mini Http service
+
+sử dụng flask để viết một mini service. Các câu lệnh sử dụng để cài:
+
+sudo apt update
+
+sudo apt install python3
+
+sudo apt install python3-pip
+
+sudo apt install python3-flask
+
+nano app.py
+
+sudo python3 app.py
+
+sau khi cài đặt thì sẽ kết với IP của instance để kiểm tra hoạt động chưa, trong lúc cài EC2 thì phải đảm bảo cho phép http port 80 để có thể kết nối. (http://ip-address/)
+
+b & c.
+
+tạo 2 instances rồi thiết lật target group cho 2 instances đấy, qua port 80. thiết lập load balancer cho 2 instances sử dụng target group.
+
+thiết liệt auto balancer và chọn auto balance cùng với load balancer, thiết lập min 1 và max 4 với desired instances là 2, cài đặt thêm tracking policy là average CPU usage với mức là 50. Sau khi cài đặt xong auto balancer thì vào instances và cài thêm stress bằng lệnh sudo apt install stress. Sau khi cài thì kích hoạt stress bằng câu lệnh stress —cpu 2 —timeout (tgian chạy) ở 2 instances, sau 1-2p thì auto scaling sẽ phát hiện mức sử dụng cpu cao và tăng thêm instances bằng template và sau khi auto scaling phát hiện thấy mức sử dụng cpu giảm và thời gian chờ 60s đã trôi qua sẽ tự động giảm số lượng instances xuống desired.
+
+![Image1](Images/Assignment1-1)
+![Image1](Images/Assignment1-2)
+![Image1](Images/Assignment1-3)
+![Image1](Images/Assignment1-4)
+![Image1](Images/Assignment1-5)
