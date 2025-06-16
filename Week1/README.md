@@ -22,7 +22,7 @@ Tìm Hiểu Về AWS
 - Acc AWS:
 ![AWS Account](images/Proof.png)
 
-# 2. Computing Service
+#2. Computing Service
     - EC2: là cơ sở hạ tầng điện toán đám mây giúp cung cấp tài nguyên máy tính ảo hóa theo yêu cầu sử dụng, các máy tính ảo hóa có thể mở rộng về khả năng xử lý cùng với các thành phần cứng ảo như ram, cpu, và dung lượng, các máy ảo EC2 có thể kết hợp với nhau để đảm bảo tính sẵn sàng và triển khai ứng dụng nhanh nhất có thể.
     - Load Balancing: Phân phối lượng công việc trên các máy chủ
         - HTTP: hoạt động ở layer 7 của OSI model,
