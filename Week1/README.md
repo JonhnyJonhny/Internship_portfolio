@@ -85,12 +85,8 @@ tạo 2 instances rồi thiết lật target group cho 2 instances đấy, qua p
 
 thiết liệt auto balancer và chọn auto balance cùng với load balancer, thiết lập min 1 và max 4 với desired instances là 2, cài đặt thêm tracking policy là average CPU usage với mức là 50. Sau khi cài đặt xong auto balancer thì vào instances và cài thêm stress bằng lệnh sudo apt install stress. Sau khi cài thì kích hoạt stress bằng câu lệnh stress —cpu 2 —timeout (tgian chạy) ở 2 instances, sau 1-2p thì auto scaling sẽ phát hiện mức sử dụng cpu cao và tăng thêm instances bằng template và sau khi auto scaling phát hiện thấy mức sử dụng cpu giảm và thời gian chờ 60s đã trôi qua sẽ tự động giảm số lượng instances xuống desired.
 
-![Image1](images/Assignment1-1.png)
-
-![Image1](images/Assignment1-2.png)
-
-![Image1](images/Assignment1-3.png)
-
-![Image1](images/Assignment1-4.png)
-
-![Image1](images/Assignment1-5.png)
+![Phong](images/Work11.png)
+![Phong](images/Work12.png)
+![Phong](images/Work13.png)
+![Phong](images/Work14.png)
+![Phong](images/Work15.png)
