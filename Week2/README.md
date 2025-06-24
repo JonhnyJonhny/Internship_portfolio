@@ -2,7 +2,7 @@
 - MFA: Multi-factor authentication, Là một lớp bảo mật nữa nằm ở trên mật khẩu thông thường nhằm phòng chống truy cập trái phép bằng cách yêu cầu khóa vật lý cắm vào máy tính để xác minh người dùng, mật mã bảo mật dùng một lần hoặc tin nhắn/mail xác thực.
 - IAM: Identity and Access Management, kiểm soát quyền truy cập của người dùng. Cho phép tạo cách danh tính để các thành viên khác có thể truy cập đúng tài nguyên mình cần trong hệ thống. Dịch vụ này cũng kiểm soát và giám sát truy cập của người dùng, mỗi lần có người dùng muốn truy cập một dịch vụ, IAM sẽ kiểm tra xem người dùng đó có trong danh sách cho phép không và chấp nhận yêu cầu truy cập của người dùng.
     - Security Group: tưởng lửa ảo kiểm soát quyền truy cập của các instances. Inbound rule cho phép  các traffice truy cập theo điều kiện đưa ra, vd source, protocol, port range. Outbound rule, cho phép instance gửi thông tin ra ngoài, hoạt động dựa trên điều kiện đặt ra tương tự như inbound rule, vd Destination, protocol và port range. SG hoạt động theo hướng stateful, một khi đã truy cập vào instance được thì sẽ cho phép phản hồi request mà không ảnh hưởng tới outbound rule
-1. Storage & CDN Service
+2. Storage & CDN Service
 - EBS: là dịch vụ lữu trữ dạng block dễ sử dụng và có hiệu năng cao, được thiết kế để dùng chung với EC2.
     - Amazon EBS general purpose SSD volumes - GP2/GP3: cả 2 đều có độ bền là 99.8%-99.9% tức tỉ lệ hỏng 0.1%-0.2%.Thích hợp để dùng cho các công việc giao dịch, máy ảo, Database size trung , các ứng dụng cần độ trễ thất,… . dung lượng tối đa là 1 GiB - 16GiB
     - Amazon EBS Provisioned IOPS SSD volumes: io1/io2 Block Express, io1 có độ bền như gp2/3 nhưng io2 thì lại có độ bền là 99.999%. Tối ưu cho hiệu năng, phù hợp với các ứng dụng kinh doanh quan trọng cần hiệu năng IOPS bền vững. io1 có dung lượng 4GB - 16TB. io2 Block Express 4GB - 64TB, có độ trễ dưới mili giây
@@ -21,7 +21,7 @@
 - CloudFront
     - CDN - Content Delivery Network : là mạng phân phối nội dung một nhóm server được đặt tại các vị trí khác nhau để trải dài mạng lưới nội dung ở nhiều vị trí địa lý khác nhau. Dịch vụ CDN của AWS có tên là CloudFront và phục vụ cung cấp giữ liệu qua các trung tâm mạng lưới dữ liệu trên toàn thế giới được gọi là edge location, hiện tại các trung tâm này được đặt 65 thành phố trên 29 quốc gia cụ thể là có 155 edge locations.
     - Case Study
-1. Database Service
+3. Database Service
 - RDS - Relational DataBase Service: Dịch vụ quản lý cho phép triển khai và quản lý cơ sở dữ liệu trên AWS, được thiết kế cho xử lý giao dịch trực tuyến (OLPT) và phù hợp nhất với các yêu cầu lưu trữ dữ liệu có cấu trúc và quan hệ.
     - Amazon Aurora:
     
@@ -160,7 +160,7 @@
     - DynamoDB Stream
         - Hàng tháng, 2,500,000 yêu cầu đọc DynamoDB Stream đầu tiên được miễn phí
         - $0.02/100,000 yêu cầu đọc DynamoDB Stream sau đấy
-1. Container Service
+4. Container Service
 - ECS (Elastic Container Service): Là service quản lý và điều phối container được phát triển bởi Amazon có hỗ trợ Docker. Dịch vụ này cho phép người dùng dễ dàng triển khai, quản lý và tự động điều chỉnh quy mô các ứng dụng chạy trong các bộ chứa. Cho phép người dùng launch hoặc stop container-based thông API đồng thời cho phép lấy state của các cluster từ centralized server cũng như cho phép access tới các features giống EC2.
 - ECS vs EC2 + Container: ECS là dịch vự được quản lý bởi amazon và được tích hợp rất nhiều service để giúp deploy cluster đơn giản hơn, trong khi đó EC2 sẽ chỉ cung cấp cho người dùng máy ảo, tất cả các utility và service sẽ do người dùng tự chọn, tự cài và tự deploy. Nhưng 2 service này không hẳn là khác nhau hoàn toàn, ECS là một service điều phối và đối tượng của nó sẽ là các instances EC2 với Docker, EC2 với container có thể chạy mà không cần ECS nhưng ECS không thể chạy mà không có EC2 nhưng điều này đã được thay đổi nhờ vào sự ra mắt của Fargate.
 - Combine ECS with ECR & S3 (TBA)
@@ -168,7 +168,7 @@
         - Self-managed node: tạo thủ công và joing vào cluster qua Node Group, là các instance EC2 cùng instance type, AMI và cùng EKS Node Role
         - EKS managed node: do EKS quản lý và sẽ tự động autoscale để điểu chỉnh số node
         - Fargate: tự tạo phần resource đáp ứng với nhu cầu mà không quan tâm đến node, các resource này không thể được truy cập trực tiếp vào.
-1. Logging và Monitoring Services
+5. Logging và Monitoring Services
 - CloudWatch: Là một dịch vự được AWS cung cấp để theo dõi các tài nguyên sử dụng chỉ với một console, CloudWatch cho phép theo dõi, lưu trữ và khả năng truy xuất vào các file logs của hệ thống và ứng dụng, cung cấp báo cáo phân tích trend và hiệu suất hệ thống, cung cấp các công cụ thông báo khi có thay đổi hoặc lỗi trong các tài nguyên. Cách CloudWatch hoạt động:
     - Metric: biểu thị một tập hợp các datapoint được sắp xếp theo thời gian cung cấp cho CloudWatch. Một metric có thể hiểu như một biến để theo dõi và các data point đại diện cho giá trị của biến đó theo thời gian
     - Dimension: là một cặp key/value xác định tính độc nhất của một metric, dùng để miêu tả đặc điểm và tính chất của metric. Mỗi Dimension được cloud watch coi là một metric riêng cho dù chúng có tên giống nhau.
@@ -198,3 +198,10 @@
     - giữ liệu trên Opensearch có thể được xem bằng queries search hoặc trang khám phá trên dashboard của Opensearch.
 - Billing Cost Explorer: là một dụng cụ phân tích giúp người dùng thấy được trend của phí sử dụng và giúp đưa ra chi phí dự tính cho 12 tháng tiếp theo dựa trên dữ liệu từ 13 tháng trở lại và dữ liệu của tháng hiện tại, mục đích của Cost Explorer là giúp người dùng tối ưu chi phí sử dụng cho cơ sở hạ tầng qua dữ liệu của các tháng trước đấy với giao diện dễ nhìn.
     - tích hợp cost explorer với cảnh báo billing qua email:
+6. Demo Monitoring + Billing Alert
+![phong](images/1.png)
+![phong](images/2.png)
+![phong](images/3.png)
+![phong](images/4.png)
+![phong](images/5.png)
+
