@@ -199,7 +199,9 @@
 - Billing Cost Explorer: là một dụng cụ phân tích giúp người dùng thấy được trend của phí sử dụng và giúp đưa ra chi phí dự tính cho 12 tháng tiếp theo dựa trên dữ liệu từ 13 tháng trở lại và dữ liệu của tháng hiện tại, mục đích của Cost Explorer là giúp người dùng tối ưu chi phí sử dụng cho cơ sở hạ tầng qua dữ liệu của các tháng trước đấy với giao diện dễ nhìn.
     - tích hợp cost explorer với cảnh báo billing qua email:
 6. Demo Monitoring + Billing Alert
+-Grafana Dashboard:
 ![phong](images/1.png)
+- Cloudwatch Dashboard & Metric:
 ![phong](images/2.png)
 ![phong](images/3.png)
 ![phong](images/4.png)
