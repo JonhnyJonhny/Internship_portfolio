@@ -295,6 +295,7 @@
         - Continuous Delievery: đảm bảo rằng code luôn sẵn sàng để triển khai bất cứ lúc nào. Sau khi code đã qua được hết công đoạn kiểm tra CI, code sẽ được đặt ở trạng thái sẵn sàng để triển khai và việc triển khai này có thể được đặt làm thủ công
         - Continuous Deployment: tự động triển khai code sau khi nó đã vượt qua tất cả kiểm tra. Không cần sự can thiệp thủ công, hệ thống tự động đưa code vào môi trường production.
   5. Configuration
+
 ![phong](images/1.png)
 ![phong](images/2.png)
 ![phong](images/3.png)
