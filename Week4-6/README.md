@@ -16,11 +16,9 @@
     
     Helm
     
-    ```jsx
     curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
     chmod 700 get_helm.sh
     ./get_helm.sh
-    ```
     
     Docker
     
@@ -33,253 +31,56 @@
     
     Tạo Directory. VD: app
     
-    Tạo Kind config
+    cấu trúc cơ bản của file chard sẽ là:
     
-    kind: Cluster
-    apiVersion: [kind.x-k8s.io/v1alpha4](http://kind.x-k8s.io/v1alpha4)
-    name: pong
-    nodes:
+    app/
     
-    - role: control-plane
-    extraPortMappings:
-        - containerPort: 30001
-        hostPort: 30001
-        protocol: TCP
+    |—Chart.yaml
     
-    sau đó chạy lệnh:
+    |—values.yaml
     
-    Kind create cluster —config kind-config.yaml —name <tên tự chọn hoặc để trống thì default sẽ là kind>
+        |—Charts/
     
-    Để kiểm tra port exposed có đúng không có thể chạy lệnh:
+            |—Python/
     
-    docker ps | grep 30001
+                |—deployment.yaml
     
-    Sau khi đã cài xong KinD cluster, tiếp đến tạo app.py:
+                |—service.yaml
     
-    from flask import Flask
-    import redis
-    import os
+    |—app.py
     
-    app = Flask(**name**)
-    r = redis.Redis(
-    host=os.getenv("REDIS_HOST", "localhost"),
-    port=int(os.getenv("REDIS_PORT", 6379)),
-    password=os.getenv("REDIS_PASSWORD", None),
-    decode_responses=True
-    )
+    |—Dockerfile
     
-    @app.route("/")
-    def index():
-    count = r.incr("hits")
-    return f"Hello from Flask! View count: {count}"
+    |—requirements.txt
     
-    if **name** == "**main**":
-    app.run(host="0.0.0.0", port=5000)
+    Chart.yaml: metadata helm sử dụng để mô tả các đặc tính của chart
     
-    Tạo thêm 1 file Requirements.txt
+    values.yaml: bản vẽ helm sử dụng để kiểm soát config của các tài nguyên kubernetes, cho phép người dùng điều chỉnh theo nhu cầu và môi trường sử dụng
     
-    Flask
+    Charts/template: đây sẽ là chỗ lưu các file để deploy của k8s
     
-    Redis
+    sau khi đã tạo xong hết các file thì sẽ cài đặt bằng helm qua câu lệnh:
     
-    Sau đó build bằng Docker và load vào KinD
-    
-    docker build -t python-app:latest .
-    
-    kind load docker-image python-app:lastest <Nếu đặt tên cho cluster thì thêm —name tên cluster hoặc không thì bỏ trống và nó sẽ mặc định sử dụng tên kind>
-    
-    Tiếp theo tạo Helm Chart có structure như này
-    
-    App/
-    
-    |— Chart.yaml
-    
-    |— values.yaml
-    
-    |— Templates
-    
-    |— deployment.yaml
-    
-    |— service.yaml
-    
-    |— _helpers.tpl 
-    
-    Chart.yaml
-    
-    apiVersion: v2
-    name: python-microservice
-    description: A simple Flask microservice connected to Redis
-    type: application
-    version: 0.1.0
-    appVersion: "1.0.0"
-    
-    values.yaml
-    
-    image:
-    repository: python-microservice
-    tag: latest
-    pullPolicy: IfNotPresent
-    
-    service:
-    type: NodePort
-    port: 80
-    nodePort: 30001
-    
-    redisHost: redis-master
-    redisPort: 6379
-    redisPasswordSecretName: redis
-    
-    deployment.yaml
-    
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-    name: {{ include "python-microservice.fullname" . }}
-    spec:
-    replicas: 1
-    selector:
-    matchLabels:
-    app: {{ include "[python-microservice.name](http://python-microservice.name/)" . }}
-    template:
-    metadata:
-    labels:
-    app: {{ include "[python-microservice.name](http://python-microservice.name/)" . }}
-    spec:
-    containers:
-    - name: {{ .Chart.Name }}
-    image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-    ports:
-    - containerPort: 5000
-    env:
-    - name: REDIS_HOST
-    value: {{ .Values.redisHost | quote }}
-    - name: REDIS_PORT
-    value: "{{ .Values.redisPort }}"
-    - name: REDIS_PASSWORD
-    valueFrom:
-    secretKeyRef:
-    name: {{ .Values.redisPasswordSecretName }}
-    key: redis-password
-    
-    service.yaml
-    
-    apiVersion: v1
-    kind: Service
-    metadata:
-    name: {{ include "python-microservice.fullname" . }}
-    spec:
-    type: {{ .Values.service.type }}
-    selector:
-    app: {{ include "[python-microservice.name](http://python-microservice.name/)" . }}
-    ports:
-    - protocol: TCP
-    port: {{ .Values.service.port }}
-    targetPort: 5000
-    nodePort: {{ .Values.service.nodePort }}
-    
-    _helpers.tpl
-    
-    {{/*
-    Return the full name of the chart (used for naming K8s resources)
-    */}}
-    {{- define "python-microservice.fullname" -}}
-    {{ .Release.Name }}-{{ .Chart.Name }}
-    {{- end }}
-    
-    {{/*
-    Return the name of the chart
-    */}}
-    {{- define "[python-microservice.name](http://python-microservice.name/)" -}}
-    {{ .Chart.Name }}
-    {{- end }}
-    
-    Trước khi deploy thì ta sẽ thêm repo của redis bằng helm qua câu lệnh
-    
-    helm repo add bitnami https://charts.bitnami.com/bitnami
-    
-    helm repo update
-    
-    helm install redis bitnami/redis
-    
-    Sau khi đã chuẩn bị xong hết file, cài đặt app bằng câu lệnh:
-    
-    helm install <tên tự chọn> ./<tên file chart>
-    
-    sau khi cài đặt thì ta có thể kiểm tra xem các pods đã chạy chưa bằng câu lệnh 
-    
-    kubectl get pods 
-    
-    và để kiểm tra xem ứng dụng có chạy đúng không thì ta sẽ kết nối với IP theo sau là port 30001 hoặc dùng câu lệnh 
-    
-    curl http://<ip>:30001 để check service có trả lại tin khi được gọi không
+    helm install <tên> <repo nếu có> <file path> 
     
 3. Cách setup NFS cho Redis
     
-    cài đặt NFS server: sudo apt install -y nfs-kernel-server
+    cài đặt nfs local bằng câu lệnh:
     
-    tạo file directory cho nfs:
+    sudo apt install nfs-kernel-server -y
     
-    sudo mkdir -p /srv/nfs/redis
-    sudo chown nobody:nogroup /srv/nfs/redis
-    sudo chmod 777 /srv/nfs/redis
+    sau khi cài đặt thì sẽ cần phải tạo directory cho local-nfs-server, cách tạo:
     
-    cài đặt export file:
-    
-    sudo nano /etc/exports
-    
-    apply lệnh export:
-    
+    sudo apt update && sudo apt install -y nfs-kernel-server
+    sudo mkdir -p /srv/nfs/data
+    sudo chown nobody:nogroup /srv/nfs/data
+    echo "/srv/nfs/data *(rw,sync,no_subtree_check,no_root_squash)" | sudo tee -a /etc/exports
     sudo exportfs -a
+    sudo systemctl restart nfs-kernel-server
     
-    nếu cần thì khởi động lại và kiểm tra trạng thái server:
+    sau khi đã tạo directory thì sẽ cần tạo 2 file yaml cho pv (persistent volume) và pvc (persistent volume claim), sau đó sẽ cần tạo thêm 1 file redis-deployment.yaml để helm tự động deploy redis theo config người dùng thay vì dùng config của bitnami.
     
-    sudo systemctl enable nfs-server
-    
-    sudo systemctl restart nfs-server
-    
-    sau khi đã cài đặt xogn nfs-server thì tiếp theo tạo 2 file yaml cho pvc (Persistent volume claim) và pv (Persistent volume)
-    
-    nfs-pv.yaml
-    
-    apiVersion: v1
-    kind: PersistentVolume
-    metadata:
-    name: redis-nfs-pv
-    spec:
-    capacity:
-    storage: 1Gi
-    accessModes:
-    - ReadWriteMany
-    nfs:
-    server: <YOUR_NFS_SERVER_IP>
-    path: /srv/nfs/redis
-    persistentVolumeReclaimPolicy: Retain
-    storageClassName: redis-nfs
-    
-    nfs-pvc.yaml
-    
-    apiVersion: v1
-    kind: PersistentVolumeClaim
-    metadata:
-    name: redis-nfs-pvc
-    spec:
-    accessModes:
-    - ReadWriteMany
-    resources:
-    requests:
-    storage: 1Gi
-    storageClassName: redis-nfs
-    
-    apply 2 file yaml bằng lệnh kubectl, sau đó tạo thêm 1 file redis-values.yaml cho helm:
-    
-    architecture: standalone
-    master:
-    persistence:
-    enabled: true
-    existingClaim: redis-nfs-pvc
-    storageClass: ""
-    
-    cài lại redis và upgrade chart nếu đang chạy từ trước
+    Sau khi tất cả đã được deploy lên và chạy, kiểm tra kĩ xem pvc và pv đã bound được chưa vì đây là lỗi hay bị nhất do lệch storageclass hoặc không connect được hoặc vấn đề khác.
     
 4. CI/CD là gì?
     
@@ -294,6 +95,25 @@
     2. CD - Continuous Delievery & Deployment
         - Continuous Delievery: đảm bảo rằng code luôn sẵn sàng để triển khai bất cứ lúc nào. Sau khi code đã qua được hết công đoạn kiểm tra CI, code sẽ được đặt ở trạng thái sẵn sàng để triển khai và việc triển khai này có thể được đặt làm thủ công
         - Continuous Deployment: tự động triển khai code sau khi nó đã vượt qua tất cả kiểm tra. Không cần sự can thiệp thủ công, hệ thống tự động đưa code vào môi trường production.
+    
+    Cách để deploy pipeline CI/CD push/pull/deploy lên ứng dụng:
+    
+    đầu tiên cần phải tạo một tài khoản gitlab và repo dự án, sau khi đã tạo thì sẽ cần cài gitlab-runner để có thể tự động hóa được quá trình.
+    
+    curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh | sudo bash
+    sudo apt install gitlab-runner
+    
+    tải gitlab-runner từ repo, sau đã cài thành công và kiểm tra thấy runner đang chạy thì sẽ cần phải register runner trên máy bằng lệnh:
+    
+    sudo gitlab-runner register
+    
+    sau khi gõ lệnh thì sẽ được yêu cầu nhập 
+    
+    URL gitlab: link dự án
+    
+    token: lấy từ trong gitlab 
+    
+    sau khi đã register thành công thì sẽ cần tạo 1 file .gitlab-ci.yml để tự động luồng ci/cd bằng cách ra lệnh cho gitlab từ việc push pull cho đến deploy, người dùng chỉ cần ra lệnh commit và file sẽ tự động được đẩy lên repo và kích hoạt luồng ci/cd. Để có thể commit được thì người dùng sẽ cần phải kiểm tra xem mình có đang dùng đúng branch không để không gây sơ suất trong môi trường production và luôn phải làm theo đúng các practices để tránh gây sai lầm.
   5. Configuration
 
 ![phong](images/1.png)
