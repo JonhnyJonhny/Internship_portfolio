@@ -1,0 +1,45 @@
+stages:
+  - build
+  - push
+  - deploy
+
+variables:
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
+  KUBECONFIG_PATH: "/root/.kube/config"
+  IMAGE_TAG: "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME"
+
+default:
+  tags:
+    - ec2-runner
+
+build:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  before_script:
+    - apk add --no-cache curl bash git
+  script:
+    - docker build -t $IMAGE_TAG .
+    - echo "$CI_JOB_TOKEN" | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
+
+push:
+  stage: push
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - docker push $IMAGE_TAG
+
+deploy:
+  stage: deploy
+  image: alpine/helm:3.8.2
+  before_script:
+    - apk add --no-cache curl bash
+    - mkdir -p $(dirname "$KUBECONFIG_PATH")
+    - echo "$KUBECONFIG" > "$KUBECONFIG_PATH"
+  script:
+    - helm upgrade --install python-app ./helm-chart-directory \
+        --set image.repository=$CI_REGISTRY_IMAGE \
+        --set image.tag=$CI_COMMIT_REF_NAME
