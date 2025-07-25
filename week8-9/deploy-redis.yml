@@ -1,0 +1,11 @@
+- name: Deploy Redis using Helm
+  hosts: local
+  tasks:
+    - name: Add Bitnami repo
+      shell: helm repo add bitnami https://charts.bitnami.com/bitnami
+
+    - name: Update repos
+      shell: helm repo update
+
+    - name: Install Redis
+      shell: helm install redis bitnami/redis --set auth.enabled=false
